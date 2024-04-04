@@ -24,4 +24,12 @@ public class AuthorizationFormTests extends TestBase{
         authorizationPage.checkHomeScreen();
         sleep(3000);
     }
+    
+    @Test
+    void errorWithEmptyFieldsTest() {
+        authorizationPage.openAuthorizationPage()
+                .pressLoginButton();
+
+        authorizationPage.errorWithEmptyFields();
+    }
 }
