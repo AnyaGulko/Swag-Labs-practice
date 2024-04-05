@@ -38,10 +38,10 @@ public class AuthorizationPage {
         APP_LOGO.shouldHave(Condition.text("Swag Labs"));
     }
 
-    private AuthorizationPage errorInputField(SelenideElement locator, String value) {
+    private AuthorizationPage errorInputField(SelenideElement locator, Condition value) {
         $(locator)
                 .shouldHave(cssValue("border-bottom-color", "rgba(226, 35, 26, 1)"))
-                .shouldHave(attribute("placeholder", value))
+                .shouldBe(value)
                 .sibling(0)
                 .shouldHave(cssClass("error_icon"));
         return this;
@@ -51,7 +51,7 @@ public class AuthorizationPage {
         SelenideElement div = $(locator);
         div.shouldHave(cssValue("background-color", "rgba(226, 35, 26, 1)"));
         div.$("button")
-                .shouldHave(cssClass("error-button"))
+                .shouldHave(cssClass("error-button")).shouldHave(visible)
                 .shouldHave(attribute("data-test", "error-button"));
         div.$("h3")
                 .shouldHave(attribute("data-test", "error"))
@@ -60,9 +60,26 @@ public class AuthorizationPage {
     }
 
     public AuthorizationPage errorWithEmptyFields() {
-        return errorInputField(USERNAME, "Username")
-                .errorInputField(PASSWORD, "Password")
+        return errorInputField(USERNAME, empty)
+                .errorInputField(PASSWORD, empty)
                 .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Username is required");
     }
 
+    public AuthorizationPage errorWithEmptyFieldPassword() {
+        return errorInputField(USERNAME, not(empty))
+                .errorInputField(PASSWORD, empty)
+                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Password is required");
+    }
+
+    public AuthorizationPage errorWithEmptyFieldUsername() {
+        return errorInputField(USERNAME, empty)
+                .errorInputField(PASSWORD, not(empty))
+                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Username is required");
+    }
+
+    public AuthorizationPage errorAuthorizationForBlockedUser() {
+        return errorInputField(USERNAME, not(empty))
+                .errorInputField(PASSWORD, not(empty))
+                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Sorry, this user has been locked out.");
+    }
 }

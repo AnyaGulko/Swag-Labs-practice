@@ -8,28 +8,69 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import ru.ingver.autotest.pages.AuthorizationPage;
 
 import static com.codeborne.selenide.Selenide.sleep;
+import static ru.ingver.autotest.pages.utils.RandomUtils.getUserName;
 
-public class AuthorizationFormTests extends TestBase{
+public class AuthorizationFormTests extends TestBase {
     AuthorizationPage authorizationPage = new AuthorizationPage();
+    final static String TEST_PASSWORD = "secret_sauce";
+    final static String TEST_BLOCKED_USER = "locked_out_user";
+    String userName = getUserName();
+
 
     @Tag("BLOCKER")
     @CsvFileSource(resources = "/test_data/successfulAuthorizationTest.csv")
     @ParameterizedTest(name = "Успешная авторизация с логином {0} и паролем {1}")
     @DisplayName("Успешная авторизация")
-    void successfulAuthorizationTest (String name, String password){
+    void successfulAuthorizationTest(String name, String password) {
         authorizationPage.openAuthorizationPage()
                 .setUserName(name)
                 .setPassword(password)
                 .pressLoginButton();
         authorizationPage.checkHomeScreen();
-        sleep(3000);
+        sleep(2000);
     }
-    
+
     @Test
+    @Tag("HIGH")
+    @DisplayName("Обработка ошибки при авторизации с пустыми полями")
     void errorWithEmptyFieldsTest() {
         authorizationPage.openAuthorizationPage()
                 .pressLoginButton();
 
         authorizationPage.errorWithEmptyFields();
+    }
+
+    @Test
+    @Tag("LOW")
+    @DisplayName("Обработка ошибки при авторизации с незаполненным паролем")
+    void errorWithEmptyFieldPasswordTest() {
+        authorizationPage.openAuthorizationPage()
+                .setUserName(userName)
+                .pressLoginButton();
+
+        authorizationPage.errorWithEmptyFieldPassword();
+    }
+
+    @Test
+    @Tag("LOW")
+    @DisplayName("Обработка ошибки при авторизации с незаполненным логином")
+    void errorWithEmptyFieldUsernameTest() {
+        authorizationPage.openAuthorizationPage()
+                .setPassword(TEST_PASSWORD)
+                .pressLoginButton();
+
+        authorizationPage.errorWithEmptyFieldUsername();
+    }
+
+    @Test
+    @Tag("HIGH")
+    @DisplayName("Обработка ошибки при авторизации под заблокированным пользователем")
+    void blockedUserAuthorizationErrorsTest() {
+        authorizationPage.openAuthorizationPage()
+                .setUserName(TEST_BLOCKED_USER)
+                .setPassword(TEST_PASSWORD)
+                .pressLoginButton();
+
+        authorizationPage.errorAuthorizationForBlockedUser();
     }
 }
