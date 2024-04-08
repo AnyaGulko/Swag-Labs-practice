@@ -1,14 +1,15 @@
-package ru.ingver.autotest.tests;
+package ru.ingver.autotest.auth.tests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import ru.ingver.autotest.pages.AuthorizationPage;
+import ru.ingver.autotest.common.TestBase;
+import ru.ingver.autotest.auth.pages.AuthorizationPage;
 
 import static com.codeborne.selenide.Selenide.sleep;
-import static ru.ingver.autotest.pages.utils.RandomUtils.getUserName;
+import static ru.ingver.autotest.auth.pages.utils.RandomUtils.getUserName;
 
 public class AuthorizationFormTests extends TestBase {
     AuthorizationPage authorizationPage = new AuthorizationPage();

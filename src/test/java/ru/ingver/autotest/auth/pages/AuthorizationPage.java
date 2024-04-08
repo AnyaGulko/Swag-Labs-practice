@@ -1,4 +1,4 @@
-package ru.ingver.autotest.pages;
+package ru.ingver.autotest.auth.pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;

@@ -1,4 +1,4 @@
-package ru.ingver.autotest.tests;
+package ru.ingver.autotest.common;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterAll;
@@ -12,7 +12,7 @@ public class TestBase {
     @BeforeAll
     static void setupConfig() {
         Configuration.browserSize = "1200x1080";
-        Configuration.baseUrl = "https://www.saucedemo.com/";
+        Configuration.baseUrl = "https://www.saucedemo.com";
         Configuration.savePageSource = false;
         Configuration.pageLoadStrategy = "eager";
     }

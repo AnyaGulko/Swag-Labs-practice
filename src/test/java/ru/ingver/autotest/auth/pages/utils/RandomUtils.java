@@ -1,4 +1,4 @@
-package ru.ingver.autotest.pages.utils;
+package ru.ingver.autotest.auth.pages.utils;
 
 import com.github.javafaker.Faker;
 
