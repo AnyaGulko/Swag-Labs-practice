@@ -7,8 +7,8 @@ import ru.ingver.autotest.auth.pages.AuthorizationPage;
 
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.attribute;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.ClickOptions.usingJavaScript;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MainPage {
@@ -19,12 +19,23 @@ public class MainPage {
             INVENTORY_ITEM_IMG = By.cssSelector("img.inventory_item_img"),
             INVENTORY_ITEM_NAME = By.cssSelector("div.inventory_item_name"),
             INVENTORY_ITEM_DESC = By.cssSelector("div.inventory_item_desc"),
-            INVENTORY_ITEM_PRICE = By.cssSelector("div.inventory_item_price");
+            INVENTORY_ITEM_PRICE = By.cssSelector("div.inventory_item_price"),
+            BUTTON_INVENTORY = By.cssSelector("button.btn_inventory"),
+            SHOPPING_CART_BADGE = By.cssSelector("span.shopping_cart_badge");
 
-    public MainPage openMainPage() {
+    public MainPage openMainPageAsStandartUser() {
         new AuthorizationPage()
                 .openAuthorizationPage()
                 .setUserName("standard_user")
+                .setPassword("secret_sauce")
+                .pressLoginButton();
+        return this;
+    }
+
+    public MainPage openMainPageAsErrorUser() {
+        new AuthorizationPage()
+                .openAuthorizationPage()
+                .setUserName("error_user")
                 .setPassword("secret_sauce")
                 .pressLoginButton();
         return this;
@@ -60,5 +71,23 @@ public class MainPage {
 
     public void cardShouldHaveImageUrl(SelenideElement card, String imgUrl) {
         card.$(INVENTORY_ITEM_IMG).shouldHave(attribute("src", Configuration.baseUrl + imgUrl));
+    }
+
+    public MainPage buttonShouldHave(SelenideElement card, String text) {
+        card.$(BUTTON_INVENTORY).shouldHave(text(text));
+        return this;
+    }
+
+    public MainPage clickOnAddToCart(SelenideElement card) {
+        card.$(BUTTON_INVENTORY).click(usingJavaScript());
+        return this;
+    }
+
+    public void counterShouldNotExist() {
+        $(SHOPPING_CART_BADGE).shouldNot(exist);
+    }
+
+    public void counterShouldHave(int count) {
+        $(SHOPPING_CART_BADGE).shouldHave(text(String.valueOf(count)));
     }
 }

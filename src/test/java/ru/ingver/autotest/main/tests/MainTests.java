@@ -1,8 +1,10 @@
 package ru.ingver.autotest.main.tests;
 
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,8 +16,26 @@ import ru.ingver.autotest.main.pages.SortingType;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class MainSortingTests extends TestBase {
+public class MainTests extends TestBase {
     private final MainPage mainPage = new MainPage();
+
+    @Test
+    @Disabled("BUG-123456 Не прожимается кнопка в карточке товара")
+    @Tag("HIGH")
+    @DisplayName("Изменение счетчика корзины после добавления товаров")
+    void addToCart() {
+        mainPage.openMainPageAsErrorUser()
+                .counterShouldNotExist();
+
+        List<SelenideElement> actualCards = mainPage.getCards();
+        for (int index = 0; index < actualCards.size(); index++) {
+            SelenideElement actualCard = actualCards.get(index);
+            mainPage.buttonShouldHave(actualCard, "Add to cart")
+                    .clickOnAddToCart(actualCard)
+                    .buttonShouldHave(actualCard, "Remove")
+                    .counterShouldHave(index + 1);
+        }
+    }
 
     static Stream<Arguments> sorting() {
         return Stream.of(
@@ -27,11 +47,11 @@ public class MainSortingTests extends TestBase {
     }
 
     @Tag("HIGH")
-    @DisplayName("Сортировка вещей")
+    @DisplayName("Сортировка товаров")
     @MethodSource
     @ParameterizedTest
     void sorting(SortingType sortingType, List<Card> expectedCards) {
-        mainPage.openMainPage().setSortingType(sortingType);
+        mainPage.openMainPageAsStandartUser().setSortingType(sortingType);
         List<SelenideElement> actualCards = mainPage.getCards();
         for (int i = 0; i < actualCards.size(); i++) {
             SelenideElement actualCard = actualCards.get(i);
@@ -43,6 +63,7 @@ public class MainSortingTests extends TestBase {
                     .cardShouldHaveImageUrl(actualCard, expectedCard.getImgUrl());
         }
     }
+
 
     //region test data
     private static List<Card> getNameAscData() {
