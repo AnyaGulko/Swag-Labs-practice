@@ -1,4 +1,4 @@
-package ru.ingver.autotest.auth.pages;
+package ru.ingver.autotest.pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -8,11 +8,11 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AuthorizationPage {
-    private final SelenideElement USERNAME = $("#user-name"),
-            PASSWORD = $("#password"),
-            APP_LOGO = $(".app_logo"),
-            LOGIN_BUTTON = $("#login-button"),
-            ERROR_MESSAGE = $(".error-message-container.error");
+    private final SelenideElement username = $("#user-name"),
+            password = $("#password"),
+            appLogo = $(".app_logo"),
+            loginButton = $("#login-button"),
+            errorMessage = $(".error-message-container.error");
 
 
     public AuthorizationPage openAuthorizationPage() {
@@ -21,21 +21,21 @@ public class AuthorizationPage {
     }
 
     public AuthorizationPage setUserName(String value) {
-        USERNAME.setValue(value);
+        username.setValue(value);
         return this;
     }
 
     public AuthorizationPage setPassword(String value) {
-        PASSWORD.setValue(value);
+        password.setValue(value);
         return this;
     }
 
     public void pressLoginButton() {
-        LOGIN_BUTTON.pressEnter();
+        loginButton.pressEnter();
     }
 
     public void checkHomeScreen() {
-        APP_LOGO.shouldHave(Condition.text("Swag Labs"));
+        appLogo.shouldHave(Condition.text("Swag Labs"));
     }
 
     private AuthorizationPage errorInputField(SelenideElement locator, Condition value) {
@@ -60,26 +60,26 @@ public class AuthorizationPage {
     }
 
     public AuthorizationPage errorWithEmptyFields() {
-        return errorInputField(USERNAME, empty)
-                .errorInputField(PASSWORD, empty)
-                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Username is required");
+        return errorInputField(username, empty)
+                .errorInputField(password, empty)
+                .errorMessageContainer(errorMessage, "Epic sadface: Username is required");
     }
 
     public AuthorizationPage errorWithEmptyFieldPassword() {
-        return errorInputField(USERNAME, not(empty))
-                .errorInputField(PASSWORD, empty)
-                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Password is required");
+        return errorInputField(username, not(empty))
+                .errorInputField(password, empty)
+                .errorMessageContainer(errorMessage, "Epic sadface: Password is required");
     }
 
     public AuthorizationPage errorWithEmptyFieldUsername() {
-        return errorInputField(USERNAME, empty)
-                .errorInputField(PASSWORD, not(empty))
-                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Username is required");
+        return errorInputField(username, empty)
+                .errorInputField(password, not(empty))
+                .errorMessageContainer(errorMessage, "Epic sadface: Username is required");
     }
 
     public AuthorizationPage errorAuthorizationForBlockedUser() {
-        return errorInputField(USERNAME, not(empty))
-                .errorInputField(PASSWORD, not(empty))
-                .errorMessageContainer(ERROR_MESSAGE, "Epic sadface: Sorry, this user has been locked out.");
+        return errorInputField(username, not(empty))
+                .errorInputField(password, not(empty))
+                .errorMessageContainer(errorMessage, "Epic sadface: Sorry, this user has been locked out.");
     }
 }

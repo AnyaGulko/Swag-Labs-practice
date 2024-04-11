@@ -1,21 +1,33 @@
-package ru.ingver.autotest.auth.tests;
+package ru.ingver.autotest.tests;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import ru.ingver.autotest.auth.pages.AuthorizationPage;
-import ru.ingver.autotest.common.TestBase;
+import org.junit.jupiter.params.provider.NullSource;
+import ru.ingver.autotest.pages.AuthorizationPage;
 
-import static ru.ingver.autotest.auth.pages.utils.RandomUtils.getUserName;
+import static ru.ingver.autotest.utils.RandomUtils.getUserName;
 
-public class AuthorizationFormTests extends TestBase {
+public class AuthorizationFormTests {
     AuthorizationPage authorizationPage = new AuthorizationPage();
     final static String TEST_PASSWORD = "secret_sauce";
     final static String TEST_BLOCKED_USER = "locked_out_user";
     String userName = getUserName();
 
+    @BeforeAll
+    static void setupConfig() {
+        Configuration.browserSize = "1200x1080";
+        Configuration.baseUrl = "https://www.saucedemo.com";
+        Configuration.savePageSource = false;
+        Configuration.pageLoadStrategy = "eager";
+    }
+
+    @AfterEach
+    void disposeWindow() {
+        Selenide.closeWebDriver();
+    }
 
     @Tag("BLOCKER")
     @CsvFileSource(resources = "/test_data/successfulAuthorizationTest.csv")
@@ -29,11 +41,15 @@ public class AuthorizationFormTests extends TestBase {
         authorizationPage.checkHomeScreen();
     }
 
-    @Test
+
     @Tag("HIGH")
+    @NullSource
+    @ParameterizedTest(name = "Авторизация с пустым логином и паролем")
     @DisplayName("Обработка ошибки при авторизации с пустыми полями")
-    void errorWithEmptyFieldsTest() {
+    void errorWithEmptyFieldsTest(String empty) {
         authorizationPage.openAuthorizationPage()
+                .setUserName(empty)
+                .setPassword(empty)
                 .pressLoginButton();
 
         authorizationPage.errorWithEmptyFields();
@@ -72,4 +88,6 @@ public class AuthorizationFormTests extends TestBase {
 
         authorizationPage.errorAuthorizationForBlockedUser();
     }
+
+
 }
