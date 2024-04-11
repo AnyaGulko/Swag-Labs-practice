@@ -1,9 +1,10 @@
 package ru.ingver.autotest.tests;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,21 +18,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-public class MainTests {
+public class MainTests extends TestBase{
     private final MainPage mainPage = new MainPage();
-
-    @BeforeAll
-    static void setupConfig() {
-        Configuration.browserSize = "1200x1080";
-        Configuration.baseUrl = "https://www.saucedemo.com";
-        Configuration.savePageSource = false;
-        Configuration.pageLoadStrategy = "eager";
-    }
-
-    @AfterEach
-    void disposeWindow() {
-        Selenide.closeWebDriver();
-    }
 
     @Test
     @Disabled("BUG-123456 Не прожимается кнопка в карточке товара")

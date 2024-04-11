@@ -1,8 +1,8 @@
 package ru.ingver.autotest.tests;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.NullSource;
@@ -10,24 +10,11 @@ import ru.ingver.autotest.pages.AuthorizationPage;
 
 import static ru.ingver.autotest.utils.RandomUtils.getUserName;
 
-public class AuthorizationFormTests {
+public class AuthorizationFormTests extends TestBase{
     AuthorizationPage authorizationPage = new AuthorizationPage();
     final static String TEST_PASSWORD = "secret_sauce";
     final static String TEST_BLOCKED_USER = "locked_out_user";
     String userName = getUserName();
-
-    @BeforeAll
-    static void setupConfig() {
-        Configuration.browserSize = "1200x1080";
-        Configuration.baseUrl = "https://www.saucedemo.com";
-        Configuration.savePageSource = false;
-        Configuration.pageLoadStrategy = "eager";
-    }
-
-    @AfterEach
-    void disposeWindow() {
-        Selenide.closeWebDriver();
-    }
 
     @Tag("BLOCKER")
     @CsvFileSource(resources = "/test_data/successfulAuthorizationTest.csv")
