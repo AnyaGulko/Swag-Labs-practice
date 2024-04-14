@@ -10,7 +10,7 @@ public class TestBase {
     @BeforeAll
     static void setupConfig() {
         Configuration.browserSize = "1200x1080";
-        Configuration.baseUrl = "https://www.saucedemo.com/";
+        Configuration.baseUrl = "https://www.saucedemo.com";
         Configuration.savePageSource = false;
         Configuration.pageLoadStrategy = "eager";
     }

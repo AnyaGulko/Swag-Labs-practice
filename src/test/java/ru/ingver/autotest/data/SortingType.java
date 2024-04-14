@@ -1,4 +1,6 @@
-package ru.ingver.autotest.pages.components;
+package ru.ingver.autotest.data;
+
+import ru.ingver.autotest.models.Card;
 
 import java.util.List;
 

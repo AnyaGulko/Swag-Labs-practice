@@ -3,7 +3,7 @@ package ru.ingver.autotest.pages;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import ru.ingver.autotest.pages.components.SortingType;
+import ru.ingver.autotest.data.SortingType;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ru.ingver.autotest.pages.components;
+package ru.ingver.autotest.models;
 
 public class Card {
     private final String title;
